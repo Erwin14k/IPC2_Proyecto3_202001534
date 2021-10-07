@@ -1,0 +1,51 @@
+{% extends "Guatemalan_Tax_System/legacy.html" %}
+{% load static %}
+    {% block content %}
+    <div class="container">
+        {% load static %}
+        <form method="post" enctype="multipart/form-data" action="upload">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="file" name="document" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Cargar Archivo</button>
+            </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <form method="post" action="send">
+                    <button type="submit" class="btn btn-primary">ENVIAR</button>
+                </form>                
+                <br>
+                <br>
+                {% if isEmpty %}
+                <div class="input-group">
+                    <span class="input-group-text">Input</span>
+                    <textarea class="form-control" aria-label="With textarea" rows="24" cols="10" disabled>{{ isEmpty }}</textarea>
+                </div>
+                {% else %}
+                <div class="input-group">
+                    <span class="input-group-text">Input</span>
+                    <textarea class="form-control" aria-label="With textarea" rows="24" cols="10" disabled></textarea>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col">  
+                <button type="submit" class="btn btn-danger">RESET</button>
+                <br>
+                <br>
+                {% if isEmpty2 %}
+                <div class="input-group">
+                    <span class="input-group-text">Output</span>
+                    <textarea class="form-control" aria-label="With textarea" rows="24" >{{ isEmpty2 }}</textarea>
+                </div>
+                {% else %}
+                <div class="input-group">
+                    <span class="input-group-text">Output</span>
+                    <textarea class="form-control" aria-label="With textarea" rows="24" disabled></textarea>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endblock %}
+    

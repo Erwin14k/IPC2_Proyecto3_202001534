@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    {% load static %}
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>Guatemalan Tax System</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+        <!-- bootstrap css -->
+        <link rel="stylesheet" href="{% static 'Guatemalan_Tax_System/css/bootstrap.min.css' %}">
+        <!-- style css -->
+        <link rel="stylesheet" href="{% static 'Guatemalan_Tax_System/css/style.css' %}">
+        <!-- Responsive-->
+        <link rel="stylesheet" href="{% static 'Guatemalan_Tax_System/css/responsive.css' %}">
+        <!-- fevicon -->
+        <link rel="icon" href="{% static 'Guatemalan_Tax_System/images/fevicon.png' %}" type="image/gif" />
+        <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" href="{% static 'Guatemalan_Tax_System/css/jquery.mCustomScrollbar.min.css' %}">
+
+    </head>
+    <!-- body -->
+    <body class="main-layout">
+        <!-- loader  -->
+        <div class="loader_bg">
+            <div class="loader"><img src="{% static 'Guatemalan_Tax_System/images/loading.gif' %}" alt="#" /></div>
+        </div>
+        <!-- end loader -->
+        <!-- header -->
+        <header>
+        <!-- header inner -->
+            <div class="header">
+                <div class="header_white_section">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="header_information">
+                                <ul>
+                                    <li><img src="{% static 'Guatemalan_Tax_System/images/1.png' %}" alt="#"/> Guatemala C.A.</li>
+                                    <li><img src="{% static 'Guatemalan_Tax_System/images/2.png' %}" alt="#"/> +502 01010101</li>
+                                    <li><img src="{% static 'Guatemalan_Tax_System/images/3.png' %}" alt="#"/> GuatemalanTaxSystem@gmail.com</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                        <div class="full">
+                            <div class="center-desk">
+                                <div class="logo"> <a href="index.html"><img src="{% static 'Guatemalan_Tax_System/images/logo R.png' %}" alt="#"></a> </div>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                                        <div class="menu-area">
+                                            <div class="limit-box">
+                                                <nav class="main-menu">
+                                                    <ul class="menu-area-main">
+                                                        <li class="nav-item {% if request.path == '/' %}active{% endif %}"> <a href="{% url 'Home' %}">Home</a> </li>
+                                                        <li class="nav-item {% if request.path == '/upload' %}active{% endif %}"> <a href="{% url 'Upload' %}">Cargar Archivo</a> </li>
+                                                        <li class="nav-item {% if request.path == '/petitions' %}active{% endif %}"><a href="{% url 'Petitions' %}">Peticiones</a></li>
+                                                        <li class="nav-item {% if request.path == '/help' %}active{% endif %}"><a href="{% url 'Help' %}">Ayuda</a></li>
+                                                        <li ><a href="#contact">Contact Us</a></li>
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                </div>
+            </div>
+    <!-- end header inner -->
+    </header>
+    <!-- end header -->
+
+    <!-- Changing Code -->
+    {% block content %}
+    
+    {% endblock %}
+    <!-- footer -->
+    <footer>
+        <div id="contact" class="footer">
+            <div class="container">
+                <div class="row pdn-top-30">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <ul class="location_icon">
+                            <li> <a href="#"><img src="{% static 'Guatemalan_Tax_System/icon/facebook.png' %}"></a></li>
+                            <li> <a href="#"><img src="{% static 'Guatemalan_Tax_System/icon/Twitter.png' %}"></a></li>
+                            <li> <a href="#"><img src="{% static 'Guatemalan_Tax_System/icon/linkedin.png' %}"></a></li>
+                            <li> <a href="#"><img src="{% static 'Guatemalan_Tax_System/icon/instagram.png' %}"></a></li>
+                        </ul>
+                    </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <div class="Follow">
+                                <h3>CONTACT US</h3>
+                                <span>Zona 12,<br>
+                                Ciudad de Guatemala<br>
+                                +502 56789543</span>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <div class="Follow">
+                                <h3>ADDITIONAL LINKS</h3>
+                                <ul class="link">
+                                    <li> <a href="#">About us</a></li>
+                                    <li> <a href="#">Terms and conditions</a></li>
+                                    <li> <a href="#"> Privacy policy</a></li>
+                                    <li> <a href="#">News</a></li>
+                                    <li> <a href="#"> Contact us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <div class="Follow">
+                                <h3> Contact</h3>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                        <input class="Newsletter" placeholder="Name" type="text">
+                                    </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                    <input class="Newsletter" placeholder="Email" type="text">
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                    <textarea class="textarea" placeholder="comment" type="text">Comment</textarea>
+                                </div>
+                            </div>
+                            <button class="Subscribe">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <div class="container">
+                        <p>Copyright 2021 All Right Reserved By <a href="https://www.instagram.com/erwin14k/">Erwin Vásquez</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- end footer -->
+    <!-- Javascript files-->
+    <script src="{% static 'Guatemalan_Tax_System/js/jquery.min.js' %}"></script>
+    <script src="{% static 'Guatemalan_Tax_System/js/popper.min.js' %}"></script>
+    <script src="{% static 'Guatemalan_Tax_System/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'Guatemalan_Tax_System/js/jquery-3.0.0.min.js' %}"></script>
+    <script src="{% static 'Guatemalan_Tax_System/js/plugin.js' %}"></script>
+    <!-- sidebar -->
+    <script src="{% static 'Guatemalan_Tax_System/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <script src="{% static 'Guatemalan_Tax_System/js/custom.js' %}"></script>
+    </body>
+</html>
