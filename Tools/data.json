@@ -1,0 +1,31 @@
+{
+    "dte": [
+        {
+            "date": " Guatemala, 15/01/2021 15:25 hrs. ",
+            "reference": "A1990",
+            "emmiter_nit": "24959111",
+            "reciever_nit": "26706288",
+            "value": "100.00",
+            "tax": "12.00",
+            "total": "112.00"
+        },
+        {
+            "date": " Guatemala, 15/01/2021 19:25 hrs. ",
+            "reference": " B1990 ",
+            "emmiter_nit": "20584458",
+            "reciever_nit": "16445929",
+            "value": "200.00",
+            "tax": "24.00",
+            "total": "224.00"
+        },
+        {
+            "date": " Guatemala, 16/01/2021 11:25 hrs. ",
+            "reference": "C1990",
+            "emmiter_nit": " 4884 ",
+            "reciever_nit": " 9393939393 ",
+            "value": " 300.00 ",
+            "tax": " 36.00 ",
+            "total": " 136.00 "
+        }
+    ]
+}

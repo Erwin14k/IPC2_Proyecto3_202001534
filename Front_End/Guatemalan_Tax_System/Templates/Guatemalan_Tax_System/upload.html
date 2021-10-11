@@ -4,45 +4,58 @@
     <div class="container">
         {% load static %}
         <form method="post" enctype="multipart/form-data" action="upload">
-            {% csrf_token %}
+        {% csrf_token %}
             <div class="input-group">
                 <input type="file" name="document" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                 <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Cargar Archivo</button>
             </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <form method="post" action="send">
-                    <button type="submit" class="btn btn-primary">ENVIAR</button>
-                </form>                
-                <br>
-                <br>
+        </form>
+        <br>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <form method="post" action="send">
+                    {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">ENVIAR</button>
+                    </form> 
+                    <br>
+                    <form method="post" action="consult">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">CONSULTAR DATOS</button>
+                    </form>               
+                    <br>
+                    <br>
                 {% if isEmpty %}
                 <div class="input-group">
                     <span class="input-group-text">Input</span>
-                    <textarea class="form-control" aria-label="With textarea" rows="24" cols="10" disabled>{{ isEmpty }}</textarea>
+                    <textarea class="form-control" aria-label="With textarea" rows="18" disabled>{{ isEmpty }}</textarea>
                 </div>
                 {% else %}
                 <div class="input-group">
                     <span class="input-group-text">Input</span>
-                    <textarea class="form-control" aria-label="With textarea" rows="24" cols="10" disabled></textarea>
+                    <textarea class="form-control" aria-label="With textarea" rows="18" disabled></textarea>
                 </div>
-                {% endif %}
+            {% endif %}
             </div>
+
             <div class="col">  
+                <br>
+                <br>
+                <br>
                 <button type="submit" class="btn btn-danger">RESET</button>
                 <br>
                 <br>
+                {% csrf_token %}
                 {% if isEmpty2 %}
                 <div class="input-group">
                     <span class="input-group-text">Output</span>
-                    <textarea class="form-control" aria-label="With textarea" rows="24" >{{ isEmpty2 }}</textarea>
+                    <textarea class="form-control" aria-label="With textarea" rows="18" disabled>{{ isEmpty2 }}</textarea>
                 </div>
                 {% else %}
                 <div class="input-group">
                     <span class="input-group-text">Output</span>
-                    <textarea class="form-control" aria-label="With textarea" rows="24" disabled></textarea>
+                    <textarea class="form-control" aria-label="With textarea" rows="18" disabled></textarea>
                 </div>
                 {% endif %}
             </div>
