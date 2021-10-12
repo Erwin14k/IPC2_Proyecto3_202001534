@@ -20,21 +20,21 @@
                         <button type="submit" class="btn btn-primary">ENVIAR</button>
                     </form> 
                     <br>
-                    <form method="post" action="consult">
+                    <form method="post" action="get_output_xml">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-success">CONSULTAR DATOS</button>
+                        <button type="submit" class="btn btn-primary">CONSULTAR DATOS</button>
                     </form>               
                     <br>
                     <br>
                 {% if isEmpty %}
                 <div class="input-group">
                     <span class="input-group-text">Input</span>
-                    <textarea class="form-control" aria-label="With textarea" rows="18" disabled>{{ isEmpty }}</textarea>
+                    <textarea class="form-control" aria-label="With textarea" rows="24" disabled>{{ isEmpty }}</textarea>
                 </div>
                 {% else %}
                 <div class="input-group">
                     <span class="input-group-text">Input</span>
-                    <textarea class="form-control" aria-label="With textarea" rows="18" disabled></textarea>
+                    <textarea class="form-control" aria-label="With textarea" rows="24" disabled></textarea>
                 </div>
             {% endif %}
             </div>
@@ -50,12 +50,12 @@
                 {% if isEmpty2 %}
                 <div class="input-group">
                     <span class="input-group-text">Output</span>
-                    <textarea class="form-control" aria-label="With textarea" rows="18" disabled>{{ isEmpty2 }}</textarea>
+                    <textarea class="form-control" aria-label="With textarea" rows="24" disabled>{{ isEmpty2 }}</textarea>
                 </div>
                 {% else %}
                 <div class="input-group">
                     <span class="input-group-text">Output</span>
-                    <textarea class="form-control" aria-label="With textarea" rows="18" disabled></textarea>
+                    <textarea class="form-control" aria-label="With textarea" rows="24" disabled></textarea>
                 </div>
                 {% endif %}
             </div>

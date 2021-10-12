@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask.globals import request
 import json
 from DTE_DAO import DTE_DAO
+from DTE_DAO import error_dao_handler
 dte_dao_handler=DTE_DAO()
 app = Flask(__name__)
 CORS(app)
@@ -23,12 +24,19 @@ def add_dte():
             value=dte['value']
             tax=dte['tax']
             total=dte['total']
-            if dte_dao_handler.validate_emitter_nit(date,emmiter_nit) and dte_dao_handler.validate_reciever_nit(date,reciever_nit) and dte_dao_handler.validate_value_tax_and_total(date,value,tax,total):
+            if dte_dao_handler.validate_emitter_nit(date,emmiter_nit) and dte_dao_handler.validate_reciever_nit(date,reciever_nit) and dte_dao_handler.validate_value_tax_and_total(date,value,tax,total) and dte_dao_handler.validate_reference(date,reference):
                 dte_dao_handler.new_dte(reference,emmiter_nit,reciever_nit,date,value,tax,total)
+            else:
+                dte_dao_handler.new_declined_dte(reference,emmiter_nit,reciever_nit,date,value,tax,total)
         dte_dao_handler.print_all_dte()
+        dte_dao_handler.xml_creator()
+        error_dao_handler.print_all_errors()
         return jsonify({"status": 200, "mensaje": "Se guardaron con éxito los DTE correctos."})
         
 
+
+#dte_dao_handler.validate_emitter_nit("15/01/2021","24959111")
+#dte_dao_handler.validate_emitter_nit("15/01/2021","26706288")
 
 
 

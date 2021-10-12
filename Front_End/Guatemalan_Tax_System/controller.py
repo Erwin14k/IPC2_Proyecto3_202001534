@@ -25,5 +25,5 @@ def xml_to_jason(route):
                     'tax' : tax,
                     'total' : total
                 })
-    with open('C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/tools/data.json', 'w', encoding='utf-8') as file:
+    with open('C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/tools/out.xml', 'w', encoding='utf-8') as file:
         dataJson = json.dump(data, file, indent=4)

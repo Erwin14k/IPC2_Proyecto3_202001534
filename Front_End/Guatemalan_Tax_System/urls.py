@@ -7,4 +7,6 @@ urlpatterns = [
     path("petitions",views.petitions, name="Petitions"),
     path("help",views.help, name="Help"),
     path("send",views.send ,name="Send"),
+    path("get_output_xml",views.get_output_xml ,name="Get_output_xml"),
+    path("documentation",views.documentation ,name="Documentation"),
 ]

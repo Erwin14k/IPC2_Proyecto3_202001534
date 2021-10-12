@@ -3,6 +3,7 @@ from django.core.files.storage import FileSystemStorage
 from . import controller
 import json
 import requests
+from django.http import FileResponse
 
 #All views
 
@@ -32,6 +33,19 @@ def upload(request):
         controller.xml_to_jason(local_route)
     return render(request,"Guatemalan_Tax_System/upload.html",context_upload)
 
+context_ouput_xml = {}
+def get_output_xml(request):
+    if request.method == 'POST':
+        text_area = ""
+        with open("C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Tools/out.xml", 'r', encoding='utf-8') as c:
+            lines = c.readlines()    
+            for content in lines:
+                content.rstrip('\n')
+                text_area = text_area + content
+                print(content)
+        context_ouput_xml['isEmpty2'] = text_area       
+    return render(request,"Guatemalan_Tax_System/upload.html",context_ouput_xml)
+
 def send(request):
     #print("se llega aquí 1")
     if request.method == "POST":
@@ -45,6 +59,11 @@ def send(request):
         response = requests.post(zelda, json=contents)
         print("Informacion enviada para validar en el backend!!!")
         return render(request, 'Guatemalan_Tax_System/upload.html')
+
+def documentation(request):
+    url = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Ensayo/ejemplo.pdf"
+    response = FileResponse(open(url, 'rb'), content_type='application/pdf')
+    return response
 
 
 
