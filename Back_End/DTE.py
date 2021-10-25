@@ -1,5 +1,6 @@
 class DTE:
-    def __init__(self,id_reference,emmiter_nit,reciever_nit,date,value,tax,total,state):
+    def __init__(self,code,id_reference,emmiter_nit,reciever_nit,date,value,tax,total,state):
+        self.code=code
         self.id_reference=id_reference
         self.emmiter_nit=emmiter_nit
         self.reciever_nit=reciever_nit
@@ -11,6 +12,7 @@ class DTE:
 
     def dump(self):
         return {
+            'code': self.code,
             'id_reference': self.id_reference,
             'emmiter_nit': self.emmiter_nit,
             'reciever_nit':  self.reciever_nit,

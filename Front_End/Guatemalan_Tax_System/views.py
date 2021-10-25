@@ -51,9 +51,9 @@ def send(request):
     if request.method == "POST":
         #print("se llega aquí 2")
         zelda = 'http://127.0.0.1:5000/send'
-        ruta = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Tools/data.json"
+        route = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Tools/data.json"
         #print("se llega aquí3")
-        with open(ruta, 'r') as file:
+        with open(route, 'r') as file:
             contents = json.loads(file.read())
         #print("se llega aquí")
         response = requests.post(zelda, json=contents)
@@ -64,6 +64,30 @@ def documentation(request):
     url = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Ensayo/ejemplo.pdf"
     response = FileResponse(open(url, 'rb'), content_type='application/pdf')
     return response
+
+def date_filter(request):
+    date = {}
+    
+    if request.method == 'GET':
+        dates_list = []
+        direction = "http://127.0.0.1:5000/date_filter"
+        response = requests.get(direction)
+        data = response.json()
+        obj = json.loads(data)
+        
+        for datum in obj:
+            try:
+                for x in range(0,100):
+                    print(datum,"0000")
+                    key = obj[datum]['AUTORIZACION'][x]['FECHA']
+                    print(key)
+                    dates_list.append(key)
+            except IndexError:
+                print("noooooooo")
+                pass
+        date['date'] = dates_list
+    
+    return render(request, 'Guatemalan_Tax_System/date_filter.html', context={"date": date})
 
 
 

@@ -1,0 +1,102 @@
+{% extends "Guatemalan_Tax_System/legacy.html" %}
+{% load static %}
+    {% block content %}
+    <div class="container">
+        <br>
+        <h1><span class="badge rounded-pill bg-primary">Filtro por fecha</span></h1>
+        <div class="row">
+            <div class="col">
+                <br>
+                <br>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">Fechas</label>
+                    <select class="form-select" id="inputGroupSelect01">
+                    <option selected>Seleccione una fecha...</option>
+                    {% for c, value in date.items %}
+                        {% for x in value %}
+                            <option id="selectDate" value="{{ x }}">{{ x }}</option>
+                        {% endfor %}
+                    {% endfor %}  
+                    </select>
+                </div>
+                <button type="submit" onclick="generateGraphic()" class="btn btn-primary">Generar grafica</button>
+            </div>
+                <br>
+                <br>
+                <canvas id="myChart"></canvas>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script> 
+    <script>
+        let date_graph = document.getElementById("myChart" ).getContext("2d")
+        
+        function generateGraphic(){
+        information = []
+        labels = []
+        let date_selection = document.getElementById("inputGroupSelect01").value
+          // console.log(selectFecha)
+
+        $.ajax({
+            url: "http://127.0.0.1:5000/date_filter",
+            dataType: "json",
+            type: "GET",
+            success: function(data){
+            var datax = JSON.parse(data)
+            // console.log(date_selection)
+            //console.log("hola")
+            let counter=0
+            try{
+                for (i=0; i<datax.LISTAAUTORIZACIONES.AUTORIZACION.length; i++){
+                    date = datax.LISTAAUTORIZACIONES.AUTORIZACION[i].FECHA
+                    if (date == date_selection){
+                        counter=i
+                        console.log(date_selection)
+                        for (y=0; y<datax.LISTAAUTORIZACIONES.AUTORIZACION[counter].LISTADO_AUTORIZACIONES.APROBACION.length ; y++ ){
+                            nit = datax.LISTAAUTORIZACIONES.AUTORIZACION[i].LISTADO_AUTORIZACIONES.APROBACION[y].NIT_SIN_REFERENCIA
+                            console.log(nit)
+                            labels.push(nit)
+                            ammount = datax.LISTAAUTORIZACIONES.AUTORIZACION[i].LISTADO_AUTORIZACIONES.APROBACION[y].IVA
+                            information.push(parseInt(ammount))
+                            console.log(parseInt(ammount))
+
+                        }
+                    }else{
+                continue
+                }
+            }
+        }catch(IndexError){
+            console.log(IndexError)
+            } 
+        }       
+        })
+        var chart = new Chart(date_graph, {
+            type: 'bar',
+            data:{
+                labels: labels,
+                datasets: [
+                    {
+                        label: "IVA por fecha",
+                        data: information,
+                        backgroundColor: ["orange", "blue", "green", "red", "pink", "black"]
+                    }
+                ]
+            },
+            options:{
+                scales:{
+                    yAxes:[{
+                        ticks:{
+                            beginAtZero:true
+                        }
+                    }
+
+                    ]
+                }
+            }
+            })
+        }
+    </script>
+    
+    {% endblock %}
+    

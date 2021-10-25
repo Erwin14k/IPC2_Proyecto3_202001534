@@ -35,7 +35,32 @@ class DTE_DAO:
                     date_buffer+=c
                 else:
                     break
-        new = DTE(id_reference,emmiter_nit,reciever_nit,date_buffer,float(value),float(tax),float(total),"APROBADA")
+        day=""
+        month=""
+        year=""
+        day=date_buffer[0:2]
+        month=date_buffer[3:5]
+        year=date_buffer[6:10]
+        code=""
+        counter=0
+        counter=self.total_dte_counter_by_date(date_buffer)
+        if counter ==0 or counter <=9:
+            code=year+month+day+"0000000"+str(counter+1)
+        elif counter >9 and counter<=99:
+            code=year+month+day+"000000"+str(counter+1)
+        elif counter >99 and counter<=999:
+            code=year+month+day+"00000"+str(counter+1)
+        elif counter >999 and counter<=9999:
+            code=year+month+day+"0000"+str(counter+1)
+        elif counter >9999 and counter<=99999:
+            code=year+month+day+"000"+str(counter+1)
+        elif counter >99999 and counter<=999999:
+            code=year+month+day+"00"+str(counter+1)
+        elif counter >999999 and counter<=9999999:
+            code=year+month+day+"0"+str(counter+1)
+        elif counter >9999999 and counter<=99999999:
+            code=year+month+day+str(counter+1)
+        new = DTE(code,id_reference,emmiter_nit,reciever_nit,date_buffer,float(value),float(tax),float(total),"APROBADA")
         self.dte_array.append(new)
         day_dao_handler.new_day(date_buffer)
         print("Se creo un nuevo DTE")
@@ -59,7 +84,7 @@ class DTE_DAO:
                     date_buffer+=c
                 else:
                     break
-        new = DTE(id_reference,emmiter_nit,reciever_nit,date_buffer,float(value),float(tax),float(total),"REPROBADA")
+        new = DTE("none",id_reference,emmiter_nit,reciever_nit,date_buffer,float(value),float(tax),float(total),"REPROBADA")
         self.dte_array.append(new)
         print("se recivió un DTE Rechazado")
         day_dao_handler.new_day(date_buffer)
@@ -242,7 +267,7 @@ class DTE_DAO:
     def print_all_dte(self):
         for dte in self.dte_array:
             if dte.state=="APROBADA":
-                print(dte.id_reference,dte.emmiter_nit,dte.reciever_nit,dte.date,dte.value,dte.tax,dte.total,dte.state)
+                print(dte.id_reference,dte.emmiter_nit,dte.reciever_nit,dte.date,dte.value,dte.tax,dte.total,dte.state,dte.code)
     
     #Función para leer xml
     def read_xml(self,route):
@@ -283,6 +308,13 @@ class DTE_DAO:
                 if counter==0:
                     self.recievers=[*self.recievers,dte.reciever_nit]
         return len(self.recievers)
+
+    #Función que devuelve todos los DTE en base a su estado 
+    def get_dte_by_state_and_date(self,state,date):
+        if state=="APROBADA":
+            return json.dumps([DTE.dump() for DTE in self.dte_array if DTE.state == "APROBADA" and DTE.date==date ]) 
+        else:
+            return json.dumps([DTE.dump() for DTE in self.dte_array if DTE.state == "REPROBADA" and DTE.date==date ]) 
 
     
 
@@ -347,8 +379,15 @@ class DTE_DAO:
                     aprobation=ET.SubElement(autorizations,"APROBACION")
                     #CADA APROBACIÓN TIENE UN NIT DEL EMISOR
                     emmiter_n=ET.SubElement(aprobation,"NIT_EMISOR")
-                    emmiter_n.set("ref",dte.id_reference)
-                    emmiter_n.text=dte.emmiter_nit
+                    emmiter_n.set("ref",str(dte.id_reference))
+                    emmiter_n.text=str(dte.emmiter_nit)
+                    #CADA APROBACIÓN TIENE SU CÓDIGO
+                    code=ET.SubElement(aprobation,"CODIGO_APROBACION")
+                    code.text=str(dte.code)
+                    tax_of_this=ET.SubElement(aprobation,"IVA")
+                    tax_of_this.text=str(dte.tax)
+                    provisional_nit=ET.SubElement(aprobation,"NIT_SIN_REFERENCIA")
+                    provisional_nit.text=str(dte.emmiter_nit)
             total_approbations=ET.SubElement(autorizations,"TOTAL_APROBACIONES")
             total_approbations.text=str(approved)
         mydata= ET.tostring(autorization_list)
@@ -370,3 +409,20 @@ class DTE_DAO:
             else:
                 element.tail = '\n' + indent * (level-1)  
             queue[0:0] = children
+    
+    def graphics_information(self):
+        data = {}
+        data['dte'] = []
+        for dte in self.dte_array:
+            if dte.state=="APROBADA":
+                data['dte'].append({
+                            'date' : dte.date,
+                            'reference' : dte.id_reference,
+                            'emmiter_nit' : dte.emmiter_nit,
+                            'reciever_nit' : dte.reciever_nit,
+                            'value' : dte.value,
+                            'tax' : dte.tax,
+                            'total' : dte.total
+                        })
+        with open('C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/tools/graphics_info.json', 'w', encoding='utf-8') as file:
+            dataJson = json.dump(data, file, indent=4)
