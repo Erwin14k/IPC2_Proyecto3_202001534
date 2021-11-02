@@ -49,6 +49,7 @@ def add_dte():
                 dte_dao_handler.new_dte(reference,emmiter_nit,reciever_nit,date,value,tax,total)
         dte_dao_handler.print_all_dte()
         dte_dao_handler.xml_creator()
+        dte_dao_handler.nit_xml_creator()
         error_dao_handler.print_all_errors()
         return jsonify({"status": 200, "mensaje": "Se guardaron con éxito los DTE correctos."})
         
@@ -57,22 +58,49 @@ def add_dte():
 #dte_dao_handler.validate_emitter_nit("15/01/2021","24959111")
 #dte_dao_handler.validate_emitter_nit("15/01/2021","26706288")
 
-@app.route('/date_filter_2', methods=['GET'])
-def date_filter2():
-    if request.method == 'GET':       
-        route = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Tools/graphics_info.json"
-        with open(route, 'r') as myfile:
-            information = myfile
-        return information
+
+@app.route('/date_filter2', methods=['POST'])
+def date_filters_2():
+    response={}
+    date = request.json['date']
+    dte_dao_handler.date_filter_emmited(date)
+    dte_dao_handler.date_filter_recieved(date)
+    response = {
+            "state": "perfect",
+            "message": "El Cálculo ha sido creado con éxito"
+        }
+    return response
+
 @app.route('/date_filter', methods=['GET'])
 def date_filters():
-    print("kkkkkkkkkkkkkkkkkkkkkkkkk")
+    #print("kkkkkkkkkkkkkkkkkkkkkkkkk")
     if request.method == 'GET':       
         route = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Tools/out.xml"
         with open(route, 'r') as myfile:
             obj = xmltodict.parse(myfile.read())
-            print("jjjjjjjjjjjjjjjjjjjjjjjjjj")
+            #print("jjjjjjjjjjjjjjjjjjjjjjjjjj")
         return jsonify(json.dumps(obj))
+
+@app.route('/range_filter', methods=['GET'])
+def range_filters():
+    #print("kkkkkkkkkkkkkkkkkkkkkkkkk")
+    if request.method == 'GET':       
+        route = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Tools/out.xml"
+        with open(route, 'r') as myfile:
+            obj = xmltodict.parse(myfile.read())
+            #print("jjjjjjjjjjjjjjjjjjjjjjjjjj")
+        return jsonify(json.dumps(obj))
+
+@app.route('/range_filter2', methods=['GET'])
+def range_filters_2():
+    response={}
+    dte_dao_handler.range_filter_total_with_iva()
+    dte_dao_handler.range_filter_total_without_iva()
+    response = {
+            "state": "perfect",
+            "message": "El Cálculo ha sido creado con éxito"
+        }
+    return response
 
 if __name__ == "__main__":
     app.run(threaded=True, port=5000,debug=True)

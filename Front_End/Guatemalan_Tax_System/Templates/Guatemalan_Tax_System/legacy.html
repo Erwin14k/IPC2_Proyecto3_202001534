@@ -56,7 +56,7 @@
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
                         <div class="full">
                             <div class="center-desk">
-                                <div class="logo"> <a href="index.html"><img src="{% static 'Guatemalan_Tax_System/images/logo R.png' %}" alt="#"></a> </div>
+                                <div class="logo"> <a href="index.html"><img src="{% static 'Guatemalan_Tax_System/images/tri.png' %}" alt="#"></a> </div>
                             </div>
                         </div>
                     </div>
@@ -68,6 +68,7 @@
                                                         <li class="nav-item {% if request.path == '/' %}active{% endif %}"> <a href="{% url 'Home' %}">Home</a> </li>
                                                         <li class="nav-item {% if request.path == '/upload' %}active{% endif %}"> <a href="{% url 'Upload' %}">Cargar Archivo</a> </li>
                                                         <li class="nav-item {% if request.path == '/date_filter' %}active{% endif %}"><a href="{% url 'Date_filter' %}">Filtro por Fecha</a></li>
+                                                        <li class="nav-item {% if request.path == '/range_filter' %}active{% endif %}"><a href="{% url 'Range_filter' %}">Rango Fechas</a></li>
                                                         <li class="nav-item {% if request.path == '/help' %}active{% endif %}"><a href="{% url 'Help' %}">Ayuda</a></li>
                                                         <li ><a href="#contact">Contact Us</a></li>
                                                     </ul>

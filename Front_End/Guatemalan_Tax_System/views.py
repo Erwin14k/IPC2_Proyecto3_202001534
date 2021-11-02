@@ -61,7 +61,7 @@ def send(request):
         return render(request, 'Guatemalan_Tax_System/upload.html')
 
 def documentation(request):
-    url = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Ensayo/ejemplo.pdf"
+    url = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Ensayo/Ensayo_Proyecto_03.pdf"
     response = FileResponse(open(url, 'rb'), content_type='application/pdf')
     return response
 
@@ -88,6 +88,30 @@ def date_filter(request):
         date['date'] = dates_list
     
     return render(request, 'Guatemalan_Tax_System/date_filter.html', context={"date": date})
+
+def range_filter(request):
+    date = {}
+    
+    if request.method == 'GET':
+        dates_list = []
+        direction = "http://127.0.0.1:5000/range_filter"
+        response = requests.get(direction)
+        data = response.json()
+        obj = json.loads(data)
+        
+        for datum in obj:
+            try:
+                for x in range(0,100):
+                    print(datum,"0000")
+                    key = obj[datum]['AUTORIZACION'][x]['FECHA']
+                    print(key)
+                    dates_list.append(key)
+            except IndexError:
+                print("noooooooo")
+                pass
+        date['date'] = dates_list
+    
+    return render(request, 'Guatemalan_Tax_System/range_filter.html', context={"date": date})
 
 
 

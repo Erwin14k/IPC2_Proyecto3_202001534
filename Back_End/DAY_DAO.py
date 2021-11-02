@@ -7,11 +7,13 @@ class DAY_DAO:
         self.days = []
     
     #Función para registrar nuevos días
-    def new_day(self,date):
+    def new_day(self,date,value,total):
         for day in self.days:
             if day.date == date:
-                return False
-        new = DAY(date)
+                day.value+=value
+                day.total+=total
+                return "Datos actualizados"
+        new = DAY(date,value,total)
         self.days.append(new)
         print("Se registró un nuevo día: ",date)
         return True

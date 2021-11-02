@@ -5,6 +5,7 @@ urlpatterns = [
     path("",views.home, name="Home"),
     path("upload",views.upload, name="Upload"),
     path("date_filter",views.date_filter, name="Date_filter"),
+    path("range_filter",views.range_filter, name="Range_filter"),
     path("help",views.help, name="Help"),
     path("send",views.send ,name="Send"),
     path("get_output_xml",views.get_output_xml ,name="Get_output_xml"),

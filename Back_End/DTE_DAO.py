@@ -6,8 +6,14 @@ import xml.etree.ElementTree as ET
 import re
 from ERROR_DAO import ERROR_DAO
 from DAY_DAO import DAY_DAO
+from NIT_DAO import NIT_DAO
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+nit_dao_handler=NIT_DAO()
 error_dao_handler=ERROR_DAO()
 day_dao_handler=DAY_DAO()
+
 
 class DTE_DAO:
     def __init__(self):
@@ -62,7 +68,9 @@ class DTE_DAO:
             code=year+month+day+str(counter+1)
         new = DTE(code,id_reference,emmiter_nit,reciever_nit,date_buffer,float(value),float(tax),float(total),"APROBADA")
         self.dte_array.append(new)
-        day_dao_handler.new_day(date_buffer)
+        day_dao_handler.new_day(date_buffer,float(value),float(total))
+        nit_dao_handler.new_nit(emmiter_nit,date_buffer,float(0),float(tax))
+        nit_dao_handler.new_nit(reciever_nit,date_buffer,float(tax),float(0))
         print("Se creo un nuevo DTE")
         
         return True
@@ -87,7 +95,7 @@ class DTE_DAO:
         new = DTE("none",id_reference,emmiter_nit,reciever_nit,date_buffer,float(value),float(tax),float(total),"REPROBADA")
         self.dte_array.append(new)
         print("se recivió un DTE Rechazado")
-        day_dao_handler.new_day(date_buffer)
+        day_dao_handler.new_day(date_buffer,float(value),float(total))
         return True
 
     def validate_reference(self,date,reference):
@@ -102,9 +110,10 @@ class DTE_DAO:
                     date_buffer+=c
                 else:
                     break
+        reference_=reference.replace(" ","")
         if len(self.dte_array)!=0:
             for dte in self.dte_array:
-                if dte.id_reference == reference:
+                if dte.id_reference == reference_:
                     print('El Número de referencia ya existe, intente de nuevo!')
                     error_dao_handler.new_error(date_buffer,"DUPLICADO")
                     print("FALSE REFERENCE")
@@ -149,6 +158,7 @@ class DTE_DAO:
     #Función que valida los nits de emisores
     def validate_emitter_nit(self,date,nit):
         #Primero se recolecta la fecha
+        nit=nit.replace(" ","")
         date_buffer=""
         date_state=0
         for c in date:
@@ -199,6 +209,7 @@ class DTE_DAO:
     #Función que valida los nits de los receptroes
     def validate_reciever_nit(self,date,nit):
         #Primero se recolecta la fecha
+        nit=nit.replace(" ","")
         date_buffer=""
         date_state=0
         for c in date:
@@ -409,6 +420,29 @@ class DTE_DAO:
             else:
                 element.tail = '\n' + indent * (level-1)  
             queue[0:0] = children
+
+    def nit_xml_creator(self):
+        route='C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/tools/nits.xml'
+        nits_list=ET.Element("LISTANITS")
+        for day in day_dao_handler.days:
+            #SE CREA UN LISTADO DE NITS POR CADA DÍA
+            date_= ET.SubElement(nits_list,"FECHA")
+            date_.text=day.date
+            for nit in nit_dao_handler.nits_array:
+                if nit.date==day.date:
+                    register= ET.SubElement(date_,"REGISTRO")
+                    nit_= ET.SubElement(register,"NIT")
+                    nit_.text=nit.code
+                    rec= ET.SubElement(register,"NIT_RECIBIDO")
+                    rec.text=str(nit.recieved_nit)
+                    emm= ET.SubElement(register,"NIT_EMITIDO")
+                    emm.text=str(nit.emmited_nit)
+        mydata= ET.tostring(nits_list)
+        mydata=str(mydata)
+        self.prettify_xml(nits_list)
+        tree=ET.ElementTree(nits_list)
+        tree.write(route,encoding="UTF-8",xml_declaration=True)
+        return True
     
     def graphics_information(self):
         data = {}
@@ -426,3 +460,75 @@ class DTE_DAO:
                         })
         with open('C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/tools/graphics_info.json', 'w', encoding='utf-8') as file:
             dataJson = json.dump(data, file, indent=4)
+
+
+    def date_filter_recieved(self,date):
+        nits=[]
+        rec=[]
+        for nit in nit_dao_handler.nits_array:
+            if nit.date==date :
+                nits=[*nits,nit.code]
+                rec=[*rec,nit.recieved_nit]
+        #nit_dao_handler.print_nits()
+        #print(nits)
+        #print(rec)
+        colors=["blue","gray","purple","orange","yellow","green","red","pink","palegreen","lightgreen","olive","teal","cyan"]
+        plt.title("RESUMEN DE IVA RECIBIDO POR CADA NIT EN LA FECHA ")
+        plt.bar(nits,height=rec,color=colors,width=0.5)
+        plt.ylabel("Iva Recibido")
+        plt.savefig("C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Front_End/Guatemalan_Tax_System/static/Guatemalan_Tax_System/images/recibido_fecha.png")
+        plt.close()
+        return "hola"
+        #pyplot.show()
+
+    def date_filter_emmited(self,date):
+        nits=[]
+        emm=[]
+        for nit in nit_dao_handler.nits_array:
+            if nit.date==date:
+                nits=[*nits,nit.code]
+                emm=[*emm,nit.emmited_nit]
+        #print("")
+        #print("")
+        #print(nits)
+        #print(emm)
+        colors=["blue","gray","purple","orange","yellow","green","red","pink","palegreen","lightgreen","olive","teal","cyan"]
+        plt.title("RESUMEN DE IVA EMITIDO POR CADA NIT EN LA FECHA ")
+        plt.bar(nits,height=emm,color=colors,width=0.5)
+        plt.ylabel("Iva Emitido")
+        plt.savefig("C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Front_End/Guatemalan_Tax_System/static/Guatemalan_Tax_System/images/emitido_fecha.png")
+        plt.close()
+        return "hola"
+        #pyplot.show()
+    def range_filter_total_with_iva(self):
+        days=[]
+        values=[]
+        for day in day_dao_handler.days:
+            values=[*values,day.total]
+            days=[*days,day.date]
+        print(days)
+        print(values)
+        colors=["blue","gray","purple","orange","yellow","green","red","pink","palegreen","lightgreen","olive","teal","cyan"]
+        plt.title("RESUMEN DE TOTAL CON IVA ")
+        plt.bar(days,height=values,color=colors,width=0.5)
+        plt.ylabel("Total Con Iva")
+        plt.savefig("C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Front_End/Guatemalan_Tax_System/static/Guatemalan_Tax_System/images/total_iva.png")
+        plt.close()
+        return "hola"
+
+    def range_filter_total_without_iva(self):
+        counter=0.00
+        days=[]
+        values=[]
+        for day in day_dao_handler.days:
+            values=[*values,day.value]
+            days=[*days,day.date]
+        print(days)
+        print(values)
+        colors=["blue","gray","purple","orange","yellow","green","red","pink","palegreen","lightgreen","olive","teal","cyan"]
+        plt.title("RESUMEN DE TOTAL SIN IVA ")
+        plt.bar(days,height=values,color=colors,width=0.5)
+        plt.ylabel("Total Con Iva")
+        plt.savefig("C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Front_End/Guatemalan_Tax_System/static/Guatemalan_Tax_System/images/total_siniva.png")
+        plt.close()
+        return "hola"

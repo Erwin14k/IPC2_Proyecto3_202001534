@@ -3,7 +3,7 @@
     {% block content %}
     <div class="container">
         <br>
-        <h1><span class="badge rounded-pill bg-primary">Filtro por fecha</span></h1>
+        <h1><span class="badge rounded-pill bg-primary">Rango por fechas</span></h1>
         <div class="row">
             <div class="col">
                 <br>
@@ -11,7 +11,7 @@
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="inputGroupSelect01">Fechas</label>
                     <select class="form-select" id="inputGroupSelect01">
-                    <option selected>Seleccione una fecha...</option>
+                    <option selected>Seleccione una fecha inicial...</option>
                     {% for c, value in date.items %}
                         {% for x in value %}
                             <option id="selectDate" value="{{ x }}">{{ x }}</option>
@@ -19,19 +19,28 @@
                     {% endfor %}  
                     </select>
                 </div>
-                <button type="submit" onclick="date_filter()" class="btn btn-primary">Generar grafica</button>
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect02">Fechas</label>
+                    <select class="form-select" id="inputGroupSelect02">
+                    <option selected>Seleccione una fecha final...</option>
+                    {% for c, value in date.items %}
+                        {% for x in value %}
+                            <option id="selectDate" value="{{ x }}">{{ x }}</option>
+                        {% endfor %}
+                    {% endfor %}  
+                    </select>
+                </div>
+                <button type="submit" onclick="range_filter()" class="btn btn-primary">Generar grafica</button>
             </div>
             <script>
-                function date_filter() {
-                let date_selection = document.getElementById("inputGroupSelect01").value
-                fetch("http://127.0.0.1:5000/date_filter2", {
-                    method: "POST",
+                function range_filter() {
+                //let date_selection = document.getElementById("inputGroupSelect01").value
+                fetch("http://127.0.0.1:5000/range_filter2", {
+                    method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        "date": date_selection               
-                    })
                 }).then(res => res.json())
                     .catch(err => {
                         window.alert("Ocurrio un error al intentar hacer el cálculo")
@@ -45,21 +54,17 @@
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
     <center>
-            <img src="{% static 'Guatemalan_Tax_System/images/emitido_fecha.png' %}"/>
-            <br>
-        <br>
-        <br>
-        <br>
-            <img src="{% static 'Guatemalan_Tax_System/images/recibido_fecha.png' %}"/>
+            <img src="{% static 'Guatemalan_Tax_System/images/total_iva.png' %}"/>
+            <img src="{% static 'Guatemalan_Tax_System/images/total_siniva.png' %}"/>
         <br>
         <br>
             <div id="btnRrr" class="col-xl-20 col-lg-20 col-md-20 col-sm-20 col-20">
-                <button id="datefilterpdf">Generar Reporte Pdf</button>
+                <button id="rangefilterpdf">Generar Reporte Pdf</button>
             </div>
         <script>
         
-        let date_filter_pdf = "";
-        date_filter_pdf += `  <!DOCTYPE html>
+        let range_filter_pdf = "";
+        range_filter_pdf += `  <!DOCTYPE html>
 <html>
 
 <head>
@@ -86,14 +91,14 @@
                 <br>
             <center>
 
-            <img src="{% static 'Guatemalan_Tax_System/images/emitido_fecha.png' %}"/>
-            <img src="{% static 'Guatemalan_Tax_System/images/recibido_fecha.png' %}"/>
+            <img src="{% static 'Guatemalan_Tax_System/images/total_iva.png' %}"/>
+            <img src="{% static 'Guatemalan_Tax_System/images/total_siniva.png' %}"/>
             </center>
                 </body>
                 </html>
                     `
                     try {
-    let pdf_button = document.getElementById("datefilterpdf");
+    let pdf_button = document.getElementById("rangefilterpdf");
     pdf_button.addEventListener("click", pdf_report);
         } catch (error) {
             console.log("que está pasando")
@@ -101,10 +106,9 @@
         }
 
         function pdf_report() {
-    html2pdf().from(date_filter_pdf).toPdf().save("reporte_filtro_fecha.pdf");
+    html2pdf().from(range_filter_pdf).toPdf().save("reporte_rangos_fecha.pdf");
     }
         </script>
         
     </center>
     {% endblock %}
-    
