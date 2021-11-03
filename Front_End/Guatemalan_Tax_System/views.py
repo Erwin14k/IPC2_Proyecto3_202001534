@@ -61,7 +61,7 @@ def send(request):
         return render(request, 'Guatemalan_Tax_System/upload.html')
 
 def documentation(request):
-    url = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Ensayo/Ensayo_Proyecto_03.pdf"
+    url = "C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Ensayo/Manual_De_Usuario__Proyecto3_IPC2.pdf"
     response = FileResponse(open(url, 'rb'), content_type='application/pdf')
     return response
 

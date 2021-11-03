@@ -473,7 +473,7 @@ class DTE_DAO:
         #print(nits)
         #print(rec)
         colors=["blue","gray","purple","orange","yellow","green","red","pink","palegreen","lightgreen","olive","teal","cyan"]
-        plt.title("RESUMEN DE IVA RECIBIDO POR CADA NIT EN LA FECHA ")
+        plt.title("RESUMEN DE IVA RECIBIDO POR CADA NIT EN LA FECHA: "+date)
         plt.bar(nits,height=rec,color=colors,width=0.5)
         plt.ylabel("Iva Recibido")
         plt.savefig("C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Front_End/Guatemalan_Tax_System/static/Guatemalan_Tax_System/images/recibido_fecha.png")
@@ -493,7 +493,7 @@ class DTE_DAO:
         #print(nits)
         #print(emm)
         colors=["blue","gray","purple","orange","yellow","green","red","pink","palegreen","lightgreen","olive","teal","cyan"]
-        plt.title("RESUMEN DE IVA EMITIDO POR CADA NIT EN LA FECHA ")
+        plt.title("RESUMEN DE IVA EMITIDO POR CADA NIT EN LA FECHA: "+date)
         plt.bar(nits,height=emm,color=colors,width=0.5)
         plt.ylabel("Iva Emitido")
         plt.savefig("C:/Users/Erwin14k/Documents/IPC2_Proyecto3_202001534/Front_End/Guatemalan_Tax_System/static/Guatemalan_Tax_System/images/emitido_fecha.png")
